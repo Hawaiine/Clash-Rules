@@ -1,6 +1,10 @@
+# > Rule Name: Reddit
+# > Author: Hawaiine
+# > UPDATED:2024/01/07 20:09
+# > DOMAIN-SUFFIX: 5
 payload:
-  - 'reddit.com'
-  - 'redditstatic.com'
-  - 'redditmail.com'
-  - 'redditmedia.com'
-  - 'redd.it'
+  - DOMAIN-SUFFIX,reddit.com
+  - DOMAIN-SUFFIX,redditstatic.com
+  - DOMAIN-SUFFIX,redditmail.com
+  - DOMAIN-SUFFIX,redditmedia.com
+  - DOMAIN-SUFFIX,redd.it
