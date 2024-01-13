@@ -1,0 +1,464 @@
+# HTTP(S) 代理服务端口
+port: 7890
+
+# SOCKS5 代理服务端口
+socks-port: 7891
+
+# HTTP(S) 和 SOCKS5 代理服务共用端口
+# mixed-port: 7890
+
+# 设置为 true 以允许来自其他 LAN IP 地址连接
+allow-lan: true
+
+# Clash 路由模式
+# rule: 基于规则的数据包路由（规则模式）
+# global: 所有数据包转发到单个节点（全局模式）
+# direct: 直接将数据包转发到互联网（直连模式）
+mode: rule
+
+# 日志级别： info | warning | error | debug | silent
+log-level: info
+
+# 当设置为 false 时，不会将主机名解析为 IPv6 地址
+ipv6: true
+
+# RESTful Web API 监听地址
+external-controller: 127.0.0.1:9090
+
+# DNS 服务设置, 此部分是可选的,当不存在时, DNS 服务将被禁用
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: flase # 当为 false 时, AAAA 查询响应为空
+  default-nameserver:
+    - 233.5.5.5 # Ali Public DNS
+    - 8.8.8.8 # Google Public DNS
+
+# 支持 UDP、TCP、DOT、DOH,您可以指定要连接的端口
+
+# 所有 DNS 查询都直接发送到 DNS 服务器，无需代理
+
+# Clash 使用第一个收到的响应作为 DNS 查询的结果
+
+  nameserver:
+    - 119.29.29.29 # DNSPod
+    - 223.5.5.5 # Ali
+    - 223.6.6.6 # Ali
+    - 8.8.8.8 # Google
+    - 8.8.4.4 # Google
+    - 1.1.1.1 # Cloudflare
+    - 1.0.0.1 # Cloudflare
+    - https://doh.pub/dns-query # DNS over HTTPS
+  enhanced-mode: fake-ip
+
+# Fake IP 地址池 CIDR
+  fake-ip-range: 198.18.0.1/16
+
+# 此列表中的主机名将不会使用 Fake IP 解析
+# 即对这些域名的请求将始终使用其真实 IP 地址进行响应
+
+  fake-ip-filter:
+    - '*.lan'
+    - '*.localdomain'
+    - '*.example'
+    - '*.invalid'
+    - '*.localhost'
+    - '*.test'
+    - '*.local'
+    - '*.home.arpa'
+    - '*.msftconnecttest.com'
+    - localhost.ptlogin2.qq.com
+
+# 代理服务器
+
+proxies:
+  - name: "US"
+    type: vmess
+    server: server
+    port: port
+    uuid: uuid
+    alterId: 0
+    cipher: auto
+    udp: true
+    tls: true
+    skip-cert-verify: false
+    servername: 伪装域名
+    network: ws
+    ws-opts:
+      path: /path
+      headers:
+        Host: 伪装域名
+
+  - name: "SG"
+    type: vmess
+    server: server
+    port: port
+    uuid: uuid
+    alterId: 0
+    cipher: auto
+    udp: true
+    tls: true
+    skip-cert-verify: false
+    servername: 伪装域名
+    network: ws
+    ws-opts:
+      path: /path
+      headers:
+        Host: 伪装域名
+
+# 有 5 种代理策略,用 type 的类型作区分
+# 1、select 用于手动选择的节点
+# 2、url-test 用于测速后选择最快的节点
+# 3、relay 用于链式代理
+# 4、fallback 用于灾备恢复
+# 5、load-balance 用于负载均衡
+
+proxy-groups:
+  - name: "节点选择"
+    type: select
+    proxies:
+      - 自动选择
+      - US
+      - SG
+
+  - name: "自动选择"
+    type: url-test
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - US
+      - SG
+
+  - name: "Apple"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "iCloud"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Microsoft"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Google"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "YouTube"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Netflix"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Disney"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "OpenAI"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Twitter"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Facebook"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Hulu"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Telegram"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Reddit"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "Spotify"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+  - name: "广告拦截"
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+
+  - name: "Final"
+    type: select
+    url: 'http://www.google.com/generate_204'
+    interval: 300
+    proxies:
+      - DIRECT
+      - 节点选择
+      - US
+      - SG
+
+# 规则列表
+rules:
+  - RULE-SET,private,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,reject,广告拦截
+  - RULE-SET,apple,Apple
+  - RULE-SET,icloud,iCloud
+  - RULE-SET,microsoft,Microsoft
+  - RULE-SET,youtube,YouTube
+  - RULE-SET,google,Google
+  - RULE-SET,netflix,Netflix
+  - RULE-SET,disney,Disney
+  - RULE-SET,openai,OpenAI
+  - RULE-SET,twitter,Twitter
+  - RULE-SET,facebook,Facebook
+  - RULE-SET,hulu,Hulu
+  - RULE-SET,telegram,Telegram
+  - RULE-SET,reddit,Reddit
+  - RULE-SET,spotify,Spotify
+  - RULE-SET,proxy,节点选择
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - RULE-SET,applications,DIRECT
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,Final
+
+# 规则集
+
+rule-providers:
+  private:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  apple:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Apple.yaml"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+
+  icloud:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/iCloud.yaml"
+    path: ./ruleset/icloud.yaml
+    interval: 86400
+
+  microsoft:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Microsoft.yaml"
+    path: ./ruleset/microsoft.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  applications:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    path: ./ruleset/applications.yaml
+    interval: 86400
+
+  google:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Google.yaml"
+    path: ./ruleset/google.yaml
+    interval: 86400
+
+  youtube:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/YouTube.yaml"
+    path: ./ruleset/youtube.yaml
+    interval: 86400
+
+  netflix:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Netflix.yaml"
+    path: ./ruleset/netflix.yaml
+    interval: 86400
+
+  disney:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Disney.yaml"
+    path: ./ruleset/disney.yaml
+    interval: 86400
+
+  openai:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/OpenAI.yaml"
+    path: ./ruleset/openai.yaml
+    interval: 86400
+
+  twitter:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Twitter.yaml"
+    path: ./ruleset/twitter.yaml
+    interval: 86400
+
+  facebook:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Facebook.yaml"
+    path: ./ruleset/facebook.yaml
+    interval: 86400
+
+  hulu:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Hulu.yaml"
+    path: ./ruleset/hulu.yaml
+    interval: 86400
+
+  telegram:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  reddit:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Reddit.yaml"
+    path: ./ruleset/reddit.yaml
+    interval: 86400
+
+  spotify:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Hawaiine/Clash-Rules/release/ruleset/Spotify.yaml"
+    path: ./ruleset/spotify.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  reject:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
