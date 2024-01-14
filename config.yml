@@ -30,11 +30,12 @@ external-controller: 127.0.0.1:9090
 dns:
   enable: true
   listen: 0.0.0.0:53
-  ipv6: flase # 当为 false 时, AAAA 查询响应为空
+  ipv6: true # 当为 false 时, AAAA 查询响应为空
   default-nameserver:
     - 233.5.5.5 # Ali Public DNS
     - 8.8.8.8 # Google Public DNS
-
+    - 2400:3200::1 # Ali Public DNS(IPv6)
+    - 2001:4860:4860::8888 # Google Public DNS(IPv6)
 # 支持 UDP、TCP、DOT、DOH,您可以指定要连接的端口
 
 # 所有 DNS 查询都直接发送到 DNS 服务器，无需代理
@@ -49,6 +50,10 @@ dns:
     - 8.8.4.4 # Google
     - 1.1.1.1 # Cloudflare
     - 1.0.0.1 # Cloudflare
+    - 2400:3200::1 # Ali Public DNS(IPv6)
+    - 2400:3200:baba::1 # Ali Public DNS(IPv6)
+    - 2001:4860:4860::8888 # Google Public DNS(IPv6)
+    - 2001:4860:4860::8844 # Goole Public DNS(IPv6)
     - https://doh.pub/dns-query # DNS over HTTPS
   enhanced-mode: fake-ip
 
