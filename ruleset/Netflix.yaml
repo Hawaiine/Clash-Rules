@@ -1,7 +1,7 @@
 # > Rule Name: Netflix
 # > Author: Hawaiine
-# > UPDATED:2024/01/07 19:31
-# > DOMAIN-SUFFIX: 25
+# > UPDATED:2024/01/31 13:56
+# > DOMAIN-SUFFIX: 27
 payload:
   - DOMAIN-SUFFIX,fast.com
   - DOMAIN-SUFFIX,netflix.ca
@@ -26,5 +26,7 @@ payload:
   - DOMAIN-SUFFIX,netflixdnstest9.com
   - DOMAIN-SUFFIX,netflixdnstest10.com
   - DOMAIN-SUFFIX,netflix.com.edgesuite.net
+  - DOMAIN-SUFFIX,apiproxy-device-prod-nlb-amazonaws.com
+  - DOMAIN-SUFFIX,apiproxy-website-nlb-prod-amazonaws.com
   - DOMAIN-SUFFIX,dualstack.apiproxy-amazonaws.com
   - DOMAIN-SUFFIX,dualstack.ichnaea-web-amazonaws.com
